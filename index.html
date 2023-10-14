@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Project 3 - API-Driven Website</title>
+
+        <link rel="icon" href="./logos/map.png" />
+
+        <!-- Bootstrap CSS -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+
+        <!-- AOS -->
+        <link
+            href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+            rel="stylesheet"
+        />
+
+        <!-- Fontawesome -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+            integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="style.css" />
+
+        <link
+            href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <header class="container-fluid">
+            <div class="container d-flex align-items-center mt-5">
+                <img
+                    src="./logos/map.svg"
+                    alt="Logo"
+                    class="logo"
+                    onclick="window.location.href = `index.html`"
+                    style="cursor: pointer"
+                />
+                <span class="fw-bold ms-3 text-secondary"
+                    >REST Countries API</span
+                >
+            </div>
+
+            <div
+                class="container d-block d-md-flex justify-content-center align-items-center my-5 py-5"
+            >
+                <div
+                    class="title me-md-5 w-50 d-block mx-auto text-center text-md-start"
+                >
+                    <h1
+                        class="fw-bold text-light"
+                        data-aos="fade-right"
+                        data-aos-duration="3000"
+                    >
+                        <span class="text-primary">API-Driven</span> Website
+                    </h1>
+                    <hr
+                        class="fw-bold text-light"
+                        data-aos="fade-right"
+                        data-aos-duration="3000"
+                    />
+                    <p
+                        class="text-light"
+                        data-aos="fade-up"
+                        data-aos-duration="3000"
+                        data-aos-easing="ease-in-back"
+                    >
+                        Powered by:
+                        <span class="fw-bold">REST Countries API</span>
+                    </p>
+                </div>
+                <div
+                    class="illustration d-block d-md-flex mt-5 mt-md-0 mx-auto"
+                >
+                    <img
+                        src="./images/globe-standing.svg"
+                        class="object-fit-cover d-block m-auto ms-5 w-75 globe"
+                        alt="Globe"
+                        data-aos="fade-left"
+                        data-aos-duration="3000"
+                    />
+                </div>
+            </div>
+        </header>
+        <main class="my-5 py-5">
+            <div
+                class="container d-flex justify-content-center align-items-center my-3 py-3"
+                id="searchContainer"
+                data-aos="fade-up"
+            ></div>
+            <div
+                class="container-fluid row mx-auto gap-3 justify-content-center"
+                id="content"
+            ></div>
+        </main>
+        <footer>
+            <p class="text-center p-5 text-light">
+                Developed By:
+                <span class="fw-bold">Karl Fredriech Getuya</span>
+            </p>
+        </footer>
+
+        <!-- Bootstrap JS -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- Sweet Alert -->
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+        <script>
+            AOS.init();
+        </script>
+
+        <script>
+            fetch("https://restcountries.com/v3.1/all")
+                .then((response) => response.json())
+                .then((result) => {
+                    result.forEach((country) => {
+                        let independence;
+                        if (country.independent == false) {
+                            independence = "Independent";
+                        } else {
+                            independence = "Dependent";
+                        }
+
+                        document.querySelector("#searchContainer").innerHTML = `
+                        <input
+                            type="text"
+                            class="form-control w-50"
+                            placeholder="Search Country..."
+                            id="searchCountry"
+                            minlength="5"
+                            maxlength="30"
+                        />
+                        <button class="btn btn-primary text-light ms-2" id="search">
+                            Search
+                        </button>
+                        `;
+
+                        const searchInput =
+                            document.querySelector("#searchCountry");
+                        const searchButton = document.querySelector("#search");
+                        searchButton.addEventListener("click", () => {
+                            if (searchInput == "" || searchInput == null) {
+                                swal(
+                                    "Error!",
+                                    "Please enter a country name!",
+                                    "error"
+                                );
+                            } else {
+                                if (
+                                    searchInput.value.toLowerCase() ==
+                                    country.name.common.toLowerCase()
+                                ) {
+                                    document.getElementById(
+                                        "content"
+                                    ).innerHTML = "";
+                                    fetch(
+                                        `https://restcountries.com/v3.1/name/${searchInput}`
+                                    )
+                                        .then((response) => response.json())
+                                        .then((result) => {
+                                            result.forEach((country) => {
+                                                country.independent
+                                                    ? "Independent"
+                                                    : "Dependent";
+
+                                                document.getElementById(
+                                                    "content"
+                                                ).innerHTML += `
+                                                    <div class="card shadow-sm col-12 col-md-4 col-lg-3 my-3 " id="card" data-bs-toggle="modal" data-bs-target="#${
+                                                        country.capital
+                                                    }" data-aos="fade-up">
+                                                    <div class="card-body">
+                                                        <h3 class="fw-bold">${
+                                                            country.name.common
+                                                        }</h3>
+                                                        <hr>
+                                                        <p class="fw-bold">${
+                                                            country.name
+                                                                .official
+                                                        }</p>
+                                                        <img src=${
+                                                            country.flags.svg
+                                                        } alt="Flag" class="w-100"/>
+                                                    </div>
+                                                    </div>
+
+                                                    <div class="modal fade" id=${
+                                                        country.capital
+                                                    } tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h2 class="fw-bold">${
+                                                                        country
+                                                                            .name
+                                                                            .common
+                                                                    }</h2>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <img src=${
+                                                                        country
+                                                                            .flags
+                                                                            .svg
+                                                                    } alt="Flag" class="w-100 mb-3"/>
+                                                                    <ul class="lists" style="list-style: none;">
+                                                                        <li>Official: ${
+                                                                            country
+                                                                                .name
+                                                                                .official
+                                                                        }</li>
+                                                                        <li>Capital: ${
+                                                                            country.capital
+                                                                        }</li>
+                                                                        <li>Independence: ${
+                                                                            country.independent
+                                                                        }</li>
+                                                                        <li>Region: ${
+                                                                            country.region
+                                                                        }</li>
+                                                                        <li>Subregion: ${
+                                                                            country.subregion
+                                                                        }</li>
+                                                                        <li>Population: ${
+                                                                            country.population
+                                                                        }</li>
+                                                                        <li>Languages: ${Object.values(
+                                                                            country.languages
+                                                                        )}</li>
+                                                                        <li>Area: ${
+                                                                            country.area
+                                                                        }</li>
+                                                                        <li>Continents: ${
+                                                                            country.continents
+                                                                        }</li>
+
+                                                                        <li>Timezones: ${
+                                                                            country.timezones
+                                                                        }</li>
+                                                                        <li>Start of Week: ${
+                                                                            country.startOfWeek
+                                                                        }</li>
+                                                                        <li>Coordinates: ${
+                                                                            country.latlng
+                                                                        }</li>
+                                                                        <li>Demonyms: ${
+                                                                            country
+                                                                                .demonyms
+                                                                                .eng
+                                                                                .f
+                                                                        }</li>
+                                                                        <li>Numeric Code: ${
+                                                                            country.ccn3
+                                                                        }</li>
+                                                                        <li>Alternative Spellings: ${
+                                                                            country.altSpellings
+                                                                        }</li>
+                                                                        <li>Region Code: ${
+                                                                            country.region
+                                                                        }</li>
+                                                                        <li>Subregion Code: ${
+                                                                            country.subregion
+                                                                        }</li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    `;
+                                            });
+                                        })
+                                        .catch((error) =>
+                                            console.log("error", error)
+                                        );
+                                } else {
+                                    swal(
+                                        "Error!",
+                                        "Country not found!",
+                                        "error"
+                                    );
+                                }
+                            }
+                        });
+
+                        document.getElementById("content").innerHTML += `
+                        <div class="card shadow-sm col-12 col-md-4 col-lg-3 my-3 " id="card" data-bs-toggle="modal" data-bs-target="#${
+                            country.capital
+                        }" data-aos="fade-up">
+                        <div class="card-body">
+                            <h3 class="fw-bold">${country.name.common}</h3>
+                            <hr>
+                            <p class="fw-bold">${country.name.official}</p>
+                            <img src=${
+                                country.flags.svg
+                            } alt="Flag" class="w-100"/>
+                        </div>
+                        </div>
+
+                        <div class="modal fade" id=${
+                            country.capital
+                        } tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h2 class="fw-bold">${
+                                            country.name.common
+                                        }</h2>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <img src=${
+                                            country.flags.svg
+                                        } alt="Flag" class="w-100 mb-3"/>
+                                        <ul class="lists" style="list-style: none;">
+                                            <li>Official: ${
+                                                country.name.official
+                                            }</li>
+                                            <li>Capital: ${country.capital}</li>
+                                            <li>Independence: ${independence}</li>
+                                            <li>Region: ${country.region}</li>
+                                            <li>Subregion: ${
+                                                country.subregion
+                                            }</li>
+                                            <li>Population: ${
+                                                country.population
+                                            }</li>
+                                            <li>Languages: ${Object.values(
+                                                country.languages
+                                            )}</li>
+                                            <li>Area: ${country.area}</li>
+                                            <li>Continents: ${
+                                                country.continents
+                                            }</li>
+
+                                            <li>Timezones: ${
+                                                country.timezones
+                                            }</li>
+                                            <li>Start of Week: ${
+                                                country.startOfWeek
+                                            }</li>
+                                            <li>Coordinates: ${
+                                                country.latlng
+                                            }</li>
+                                            <li>Demonyms: ${
+                                                country.demonyms.eng.f
+                                            }</li>
+                                            <li>Numeric Code: ${
+                                                country.ccn3
+                                            }</li>
+                                            <li>Alternative Spellings: ${
+                                                country.altSpellings
+                                            }</li>
+                                            <li>Region Code: ${
+                                                country.region
+                                            }</li>
+                                            <li>Subregion Code: ${
+                                                country.subregion
+                                            }</li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        `;
+                    });
+                })
+                .catch((error) => console.log("error", error));
+        </script>
+    </body>
+</html>
