@@ -147,6 +147,13 @@
                             independence = "Dependent";
                         }
 
+                        if (country.capital == undefined) {
+                            country.capital = "N/A";
+                        }
+                        if (country.subregion == undefined) {
+                            country.subregion = "N/A";
+                        }
+
                         document
                             .querySelector("#searchBar")
                             .addEventListener("keyup", () => {
@@ -169,7 +176,7 @@
                             });
 
                         document.getElementById("content").innerHTML += `
-                        <div class="card shadow-sm col-12 col-md-4 col-lg-3 my-3" id="card" data-bs-toggle="modal" data-bs-target=#${countryName} data-aos="fade-up">
+                        <div class="card shadow-sm col-12 col-md-4 col-lg-3 my-3" id="card" onclick="modal()" data-aos="fade-up">
                             <div class="card-body" id="card-body">
                                 <h3 class="fw-bold" id="countryName">${countryName}</h3>
                                 <hr>
@@ -178,39 +185,42 @@
                             </div>
                         </div>
 
-                        <div class="modal fade" id=${countryName} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h2 class="fw-bold">${country.name.common}</h2>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src=${country.flags.svg} alt="Flag" class="w-100 mb-3"/>
-                                        <ul class="lists" style="list-style: none;">
-                                            <li>Official: ${country.name.official}</li>
-                                            <li>Capital: ${country.capital}</li>
-                                            <li>Independence: ${independence}</li>
-                                            <li>Region: ${country.region}</li>
-                                            <li>Subregion: ${country.subregion}</li>
-                                            <li>Population: ${country.population}</li>
-                                            <li>Area: ${country.area}</li>
-                                            <li>Continents: ${country.continents}</li>
-                                            <li>Timezones: ${country.timezones}</li>
-                                            <li>Start of Week: ${country.startOfWeek}</li>
-                                            <li>Coordinates: ${country.latlng}</li>
-                                            <li>Numeric Code: ${country.ccn3}</li>
-                                            <li>Alternative Spellings: ${country.altSpellings}</li>
-                                            <li>Region Code: ${country.region}</li>
-                                            <li>Subregion Code: ${country.subregion}</li>
-                                        </ul>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        function modal() {
+                            <div class="modal fade" id=${countryName} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h2 class="fw-bold">${countryName}</h2>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img src=${country.flags.svg} alt="Flag" class="w-100 mb-3"/>
+                                            <ul class="lists" style="list-style: none;">
+                                                <li>Official: ${country.name.official}</li>
+                                                <li>Capital: ${country.capital}</li>
+                                                <li>Independence: ${independence}</li>
+                                                <li>Region: ${country.region}</li>
+                                                <li>Subregion: ${country.subregion}</li>
+                                                <li>Population: ${country.population}</li>
+                                                <li>Area: ${country.area}</li>
+                                                <li>Continents: ${country.continents}</li>
+                                                <li>Timezones: ${country.timezones}</li>
+                                                <li>Start of Week: ${country.startOfWeek}</li>
+                                                <li>Coordinates: ${country.latlng}</li>
+                                                <li>Numeric Code: ${country.ccn3}</li>
+                                                <li>Alternative Spellings: ${country.altSpellings}</li>
+                                                <li>Region Code: ${country.region}</li>
+                                                <li>Subregion Code: ${country.subregion}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            </div>
+                        }
+                        
                         `;
                     });
                 })
