@@ -176,7 +176,7 @@
                             });
 
                         document.getElementById("content").innerHTML += `
-                        <div class="card shadow-sm col-12 col-md-4 col-lg-3 my-3" id="card" onclick="modal()" data-aos="fade-up">
+                        <div class="card shadow-sm col-12 col-md-4 col-lg-3 my-3" id="card" data-bs-toggle="modal" data-bs-target=${countryName} data-aos="fade-up">
                             <div class="card-body" id="card-body">
                                 <h3 class="fw-bold" id="countryName">${countryName}</h3>
                                 <hr>
@@ -185,7 +185,6 @@
                             </div>
                         </div>
 
-                        function modal() {
                             <div class="modal fade" id=${countryName} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                                     <div class="modal-content">
@@ -219,8 +218,6 @@
                                     </div>
                                 </div>
                             </div>
-                        }
-                        
                         `;
                     });
                 })
