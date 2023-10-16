@@ -4,6 +4,7 @@
     margin: 0;
     box-sizing: border-box;
     font-family: "Poppins";
+    scroll-behavior: smooth;
 }
 body {
     background-image: url(./images/world.jpg);
@@ -30,6 +31,7 @@ h1 {
     cursor: pointer;
     color: #9fa6b2;
 }
+
 .card:hover {
     background: rgb(246, 245, 245);
     color: #292b2c;
